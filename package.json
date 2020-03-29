@@ -1,0 +1,22 @@
+{
+  "name": "src-mp",
+  "version": "1.0.0",
+  "description": "Consume source maps from the command line",
+  "main": "bin/src-mp",
+  "repository": "https://github.com/nickcis/src-mp",
+  "author": "Nicolas Cisco",
+  "scripts": {
+    "format": "prettier 'bin/*' --write --parser babel"
+  },
+  "bin": "./bin/src-mp",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/code-frame": "^7.8.3",
+    "chalk": "^3.0.0",
+    "source-map": "^0.7.3",
+    "yargs": "^15.3.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.2"
+  }
+}

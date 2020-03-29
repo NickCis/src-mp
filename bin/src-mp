@@ -1,0 +1,71 @@
+#! /usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const util = require('util');
+const chalk = require('chalk');
+const { SourceMapConsumer } = require('source-map');
+const { codeFrameColumns } = require('@babel/code-frame');
+
+const readFile = util.promisify(fs.readFile);
+
+const argv = require('yargs').command(
+  '$0 <map> <line> <column>',
+  'Consume source maps from the command line',
+  (yargs) => {
+    yargs
+      .positional('map', {
+        describe: 'Source map file',
+      })
+      .positional('line', {
+        describe: 'Line in the transformed file',
+        type: 'number',
+      })
+      .positional('column', {
+        describe: 'Column in the transformed file',
+        type: 'number',
+      });
+  },
+).argv;
+
+async function main(args) {
+  try {
+    const raw = JSON.parse(await readFile(path.resolve(args.map)));
+
+    await SourceMapConsumer.with(raw, null, (consumer) => {
+      const position = consumer.originalPositionFor({
+        line: args.line,
+        column: args.column,
+      });
+
+      if (!position.line) {
+        console.log('Error: No line or column in source map');
+        process.exit(1);
+      }
+
+      const parsed = path.parse(position.source);
+
+      console.log(`${chalk.dim(`${parsed.dir}/`)}${chalk.bold.white(parsed.base)}:${position.line}:${position.column}`);
+      console.log();
+
+      const source = consumer.sourceContentFor(position.source);
+
+      if (source) {
+        const renderedCallsite = codeFrameColumns(
+          source,
+          { start: { column: position.column, line: position.line } },
+          { highlightCode: true },
+        );
+
+        console.log(renderedCallsite);
+      }
+
+      process.exit(0);
+    });
+  } catch (e) {
+    console.log(e.toString());
+    process.exit(1);
+  }
+}
+
+main(argv);
