@@ -8,7 +8,10 @@
   "scripts": {
     "format": "prettier 'bin/*' --write --parser babel"
   },
-  "bin": "./bin/src-mp",
+  "bin": {
+    "src-mp": "./bin/src-mp",
+    "src-mp-extract": "./bin/src-mp-extract"
+  },
   "license": "MIT",
   "dependencies": {
     "@babel/code-frame": "^7.8.3",
