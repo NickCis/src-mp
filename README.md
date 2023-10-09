@@ -22,6 +22,24 @@ The objective of this cli is to easily allow to see what code is behind a line a
 
 With the rise of transpilers (and compilers) for server code, I often found myself debuging stack traces with incomprenhensible combination of lines and column. I would always resort to installing [`source-map`](https://github.com/mozilla/source-map) and manually consumming the source map. This tool does just that, but without the need running manually the code.
 
+This package also has a `src-mp-extract` that will extract all files from the source map.
+
+## Help
+
+```
+src-mp <map> <line> <column>
+
+Consume source maps from the command line
+
+Positionals:
+  map     Source map file
+  line    Line in the transformed file                                  [número]
+  column  Column in the transformed file                                [número]
+
+Options:
+  --help     Muestra ayuda                                            [booleano]
+  --version  Muestra número de versión                                [booleano]
+```
 
 ## Example
 
@@ -58,3 +76,19 @@ webpack:///node_modules/@sendgrid/helpers/classes/mail.js:262:11
   265 |       this.applySubstitutions(personalization);
 ```
 
+### Extract
+
+```
+src-mp-extract <map> <output>
+
+Extract all files from source map
+
+Positionals:
+  map     Source map file
+  output  Output folder
+
+Options:
+  --help        Muestra ayuda                                         [booleano]
+  --version     Muestra número de versión                             [booleano]
+  --filter, -f  Regexp in order to filter out files    [defecto: "node_modules"]
+```
