@@ -1,6 +1,6 @@
 {
   "name": "src-mp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Consume source maps from the command line",
   "main": "bin/src-mp",
   "repository": "https://github.com/nickcis/src-mp",
